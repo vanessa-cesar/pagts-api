@@ -17,7 +17,7 @@ describe('Fluxo de Autenticação - Registro e Login', () => {
             .send(novoUsuario);
 
         expect(response.status).to.equal(201);
-        expect(response.body).to.have.property('message', 'Usuário criado!');
+        expect(response.body).to.have.property('message', 'Usuário registrado com sucesso.');
     });
 
     
