@@ -1,6 +1,16 @@
 # Lista de Compras API
 
-API REST em Node.js/Express para autenticação de usuários e gerenciamento de listas de compras.
+Este projeto consiste no desenvolvimento de uma API híbrida (REST e GraphQL) utilizando Node.js e Express, para autenticação de usuários e gerenciamento de listas de compras.
+
+⚙️ Tecnologias e Ferramentas
+Runtime: Node.js (v20+)
+
+Framework Web: Express
+Documentação: Swagger (OpenAPI 3.0)
+API Query Language: GraphQL com Apollo Server
+Testes: Mocha, Chai e Supertest
+Mocks/Stubbing: Sinon.js
+CI/CD: GitHub Actions
 
 ## Instalação
 
@@ -44,32 +54,41 @@ Note que em alguns cenários a integração do Apollo Server requer Node.js 20+ 
 
 ## Funcionalidades
 
-- Registro e login de usuários
+- Cadastro de usuários
+- Autenticação (login)
 - Consulta de usuários
-- Gerenciamento de listas de compras (adicionar, marcar como comprado, excluir)
+- Gerenciamento de lista de compras:
+   - Inclusão de itens
+   - Marcação de item como comprado
+   - Listagem de itens
+   - Exclusão de itens
 
 ## Autenticação
 
 Após o login (`POST /users/login`), será retornado um token. Para acessar as rotas de lista de compras (`/lists`), envie o token no header:
 
 ```
-Authorization: Bearer SEU_TOKEN_AQUI
+Authorization: Bearer TOKEN_GERADO
 ```
 
 ## Estrutura
 
-- `controller/` - Lida com as rotas e requisições
-- `service/` - Lógica de negócio
-- `model/` - Modelos de dados
-- `app.js` - Configuração do app Express
-- `server.js` - Inicialização do servidor
-- `swagger.json` - Documentação da API
+controller/   Camada responsável pelas rotas
+service/      Camada de regras de negócio
+model/        Modelos de dados
+test/         Testes unitários, integração e GraphQL
+app.js        Configuração da aplicação Express
+server.js     Inicialização do servidor
+swagger.json  Documentação da API REST
+
 
 ## Regras de Negócio
 
 - Login exige usuário e senha
 - Não permite usuários duplicados
+- Rotas de lista exigem autenticação via token JWT
 - Não permite incluir item já marcado como comprado
+- Os dados são armazenados em memória (sem persistência)
 
 ## Testes
 
@@ -77,3 +96,15 @@ A suíte de testes cobre:
 - **Testes Unitários:** Utilizando Sinon para isolamento de camadas.
 - **Testes de Integração (REST):** Fluxos completos de autenticação e lista de compras.
 - **Testes GraphQL:** Validação de queries e disponibilidade do endpoint.
+Os testes são executados automaticamente durante o processo de integração contínua.
+
+
+## Integração Contínua (CI)
+
+Foi configurada uma pipeline de integração contínua utilizando GitHub Actions, 
+responsável por:
+Instalação das dependências
+Configuração das variáveis de ambiente
+Execução automática da suíte de testes
+
+
