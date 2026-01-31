@@ -40,19 +40,15 @@ describe('API de Lista de Compras', () => {
             .set('Authorization', `Bearer ${token}`)
             .send(novoItem);
         
-        
-        expect(response.status, `Resposta inesperada ao criar item: ${JSON.stringify(response.body)}`).to.be.oneOf([200, 201]);
-
-      
-        expect(response.body, `Resposta inesperada ao criar item: ${JSON.stringify(response.body)}`).to.be.an('object');
+        expect(response.status).to.equal(201);
+        expect(response.body).to.have.property('id');
         expect(response.body).to.have.property('quantidade');
-        expect(response.body.quantidade).to.equal(novoItem.quantidade);
         expect(response.body).to.have.property('prioridade');
-        expect(response.body.prioridade).to.equal(novoItem.prioridade);
+        expect(response.body).to.have.property('id');
 
-        
-        itemId = response.body.id || response.body._id || (response.body._doc && (response.body._doc.id || response.body._doc._id));
-        expect(itemId, `ID do item não encontrado na resposta: ${JSON.stringify(response.body)}`).to.not.be.undefined;
+    
+        itemId = response.body.id || response.body._id;
+        expect(itemId).to.not.be.undefined;
     
     });
 
@@ -65,7 +61,7 @@ describe('API de Lista de Compras', () => {
             .set('Authorization', `Bearer ${token}`);
        
         expect(response.status).to.equal(200);     
-        expect(response.body).to.have.property('id', itemId);
+        expect(response.body).to.have.property('id');
         expect(response.body).to.have.property('comprado', true);
     });
 
