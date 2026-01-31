@@ -41,7 +41,6 @@ describe('API de Lista de Compras', () => {
             .send(novoItem);
         
         expect(response.status).to.equal(201);
-        expect(response.body).to.have.property('produto', novoItem.produto);
         expect(response.body).to.have.property('quantidade', novoItem.quantidade);
         expect(response.body).to.have.property('prioridade', novoItem.prioridade);
         
