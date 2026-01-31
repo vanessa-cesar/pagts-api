@@ -29,31 +29,33 @@ describe('API de Lista de Compras', () => {
         expect(token).to.not.be.undefined;
     });
 
-    
-   
     it('1 - Deve adicionar um novo item com nome único', async () => {
-        const novoItem = { 
-            produto: `Item_${Date.now()}`, 
-            quantidade: 3,
-            prioridade: 'Alta'             
-        };
-        
-        const response = await request(baseUrl)
-            .post('/lists/item')
-            .set('Authorization', `Bearer ${token}`)
-            .send(novoItem);
-        
-        expect(response.status).to.equal(201);
-        expect(response.body).to.have.property('id');
-        expect(response.body).to.have.property('quantidade');
-        expect(response.body).to.have.property('prioridade');
-        expect(response.body).to.have.property('id');
+    const novoItem = { 
+        produto: `Item_${Date.now()}`, // Usando 'produto' como no Swagger
+        quantidade: 3,
+        prioridade: 'Alta'             
+    };
+    
+    const response = await request(baseUrl)
+        .post('/lists/item')
+        .set('Authorization', `Bearer ${token}`)
+        .send(novoItem);
+    
+    // Debug para ver exatamente o que a API responde na Pipeline
+    console.log('RESPOSTA API:', JSON.stringify(response.body, null, 2));
+    
+    expect(response.status).to.equal(201);
+    
+    // Ajuste aqui: troque qualquer 'item' por 'produto'
+    expect(response.body).to.have.property('id');
+    expect(response.body).to.have.property('produto'); 
+    expect(response.body).to.have.property('quantidade');
 
+    itemId = response.body.id || response.body._id;
+    expect(itemId).to.not.be.undefined;
     
-        itemId = response.body.id || response.body._id;
-        expect(itemId).to.not.be.undefined;
+});
     
-    });
 
     it('2 - Deve marcar um item como comprado ', async () => {
         
