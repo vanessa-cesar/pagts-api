@@ -9,6 +9,7 @@ describe('API de Lista de Compras', () => {
     let itemId; 
    
     before(async function() {
+        console.log('BASE_URL em uso:', baseUrl);
     
         const credenciais = { 
             username: config.testUser, 
@@ -16,6 +17,8 @@ describe('API de Lista de Compras', () => {
         };
 
         const response = await request(baseUrl)
+        
+
             .post('/users/login')
             .send(credenciais);
         
