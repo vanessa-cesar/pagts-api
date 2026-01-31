@@ -31,7 +31,7 @@ describe('API de Lista de Compras', () => {
 
     it('1 - Deve adicionar um novo item com nome único', async () => {
     const novoItem = { 
-        produto: `Item_${Date.now()}`, // Usando 'produto' como no Swagger
+        produto: `Arroz_${Date.now()}`, 
         quantidade: 3,
         prioridade: 'Alta'             
     };
@@ -41,19 +41,15 @@ describe('API de Lista de Compras', () => {
         .set('Authorization', `Bearer ${token}`)
         .send(novoItem);
     
-    // Debug para ver exatamente o que a API responde na Pipeline
-    console.log('RESPOSTA API:', JSON.stringify(response.body, null, 2));
-    
     expect(response.status).to.equal(201);
     
-    // Ajuste aqui: troque qualquer 'item' por 'produto'
     expect(response.body).to.have.property('id');
     expect(response.body).to.have.property('produto'); 
     expect(response.body).to.have.property('quantidade');
 
     itemId = response.body.id || response.body._id;
     expect(itemId).to.not.be.undefined;
-    
+
 });
     
 

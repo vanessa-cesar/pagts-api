@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
     // Lógica de registro
-    res.status(201).json({ message: "Usuário criado!" });
+    res.status(201).json({ message: "Usuário registrado com sucesso." });
 };
 
 const login = async (req, res) => {
