@@ -1,0 +1,38 @@
+name: Pipeline de Testes Automatizados
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Rodar API e Testes
+        run: |
+          # Inicia o servidor em segundo plano (&)
+          node server.js & 
+          # Aguarda a porta 3000 responder (instala o wait-on rapidamente para isso)
+          npx wait-on http://localhost:3000/api-docs
+          # Executa os testes (Mocha/Chai/Supertest)
+          npm test
+        env:
+          PORT: 3000
+          BASE_URL: http://localhost:3000
+          # Essas variáveis o GitHub pegará dos "Secrets" que você cadastrar
+          TEST_USER: ${{ secrets.TEST_USER }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}

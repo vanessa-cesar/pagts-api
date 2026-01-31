@@ -1,0 +1,25 @@
+{
+  "name": "pagts-api",
+  "version": "1.0.0",
+  "description": "API REST para autenticação de usuários e lista de compras.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha \"test/**/*.test.js\" --timeout 10000",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@apollo/server": "^5.3.0",
+    "body-parser": "^2.2.2",
+    "chai": "^6.0.1",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "graphql": "^16.12.0",
+    "jsonwebtoken": "^9.0.3",
+    "mocha": "^11.7.2",
+    "supertest": "^7.1.4",
+    "swagger-ui-express": "^4.6.3"
+  },
+  "devDependencies": {
+    "sinon": "^21.0.1"
+  }
+}

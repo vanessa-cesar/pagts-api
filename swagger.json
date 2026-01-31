@@ -1,0 +1,189 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Lista de Compras API",
+    "version": "1.0.0",
+    "description": "API para autenticação de usuários e gerenciamento de listas de compras."
+  },
+  "servers": [
+    { "url": "http://localhost:3000" }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "summary": "Registrar novo usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Usuário registrado com sucesso." },
+          "400": { "description": "Usuário e senha são obrigatórios." },
+          "409": { "description": "Usuário já existe." }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login de usuário",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": { "type": "string" },
+                  "password": { "type": "string" }
+                },
+                "required": ["username", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Login realizado com sucesso." },
+          "400": { "description": "Usuário e senha são obrigatórios." },
+          "401": { "description": "Credenciais inválidas." }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Listar todos os usuários",
+        "responses": {
+          "200": {
+            "description": "Lista de usuários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "object", "properties": { "username": { "type": "string" } } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lists": {
+      "get": {
+        "summary": "Listar todos os itens da lista de compras",
+        "responses": {
+          "200": {
+            "description": "Lista de itens",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Item"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/lists/item": {
+      "post": {
+        "summary": "Adicionar item à lista de compras",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "produto": { "type": "string" },
+                  "quantidade": { "type": "integer" },
+                  "prioridade": { "type": "string" },
+                  "comprado": { "type": "boolean" }
+                },
+                "required": ["produto", "quantidade", "prioridade"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Item adicionado." },
+          "400": { "description": "Produto, quantidade e prioridade são obrigatórios ou item já comprado." }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/lists/item/{id}/buy": {
+      "patch": {
+        "summary": "Marcar item como comprado",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "Item marcado como comprado." },
+          "404": { "description": "Item não encontrado." }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/lists/item/{id}": {
+      "delete": {
+        "summary": "Excluir item da lista de compras",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "204": { "description": "Item excluído." },
+          "404": { "description": "Item não encontrado." }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Item": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "produto": { "type": "string" },
+          "quantidade": { "type": "integer" },
+          "prioridade": { "type": "string" },
+          "comprado": { "type": "boolean" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    { "bearerAuth": [] }
+  ]
+}
